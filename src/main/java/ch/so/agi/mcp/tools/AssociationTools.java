@@ -1,0 +1,33 @@
+package ch.so.agi.mcp.tools;
+
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+
+@Component
+public class AssociationTools {
+
+  public static class Role {
+    public String name;
+    public String classFQN;
+    public String card; // e.g. {1}, {0..1}, {1..*}
+  }
+
+  @Tool(name = "createAssociationSnippet",
+        description = "Erzeugt eine ASSOCIATION. Params: name (required), roles (2+ Rollen mit name,classFQN,card).")
+  public Map<String,Object> createAssociation(
+      @ToolParam(description = "Assoziationsname", required = true) String name,
+      @ToolParam(description = "Rollen (mindestens 2)", required = true) List<Role> roles
+  ) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("ASSOCIATION ").append(name).append(" =\n");
+    for (Role r : roles) {
+      sb.append("  ").append(r.name).append(" -- ").append(r.card).append(" ").append(r.classFQN).append(";\n");
+    }
+    sb.append("END ").append(name).append(";");
+    return Map.of("iliSnippet", sb.toString(), "cursorHint", Map.of("line", 1, "col", 2));
+  }
+}

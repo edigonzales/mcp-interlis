@@ -1,1 +1,4 @@
 # mcp-interlis
+
+
+- partial compilation?
