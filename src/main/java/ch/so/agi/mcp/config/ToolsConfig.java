@@ -16,7 +16,10 @@ public class ToolsConfig {
       DomainTools domainTools,
       ClassTools classTools,
       AssociationTools assocTools,
-      ConstraintTools constraintTools
+      ConstraintTools constraintTools,
+      AttributeTools attributeTools,
+      StructureTools structureTools,
+      StructureAttributeTools structureAttributeTools
   ) {
     return MethodToolCallbackProvider.builder()
         .toolObjects(
@@ -25,7 +28,10 @@ public class ToolsConfig {
             domainTools,
             classTools,
             assocTools,
-            constraintTools
+            constraintTools,
+            attributeTools,
+            structureTools,
+            structureAttributeTools
         )
         .build();
   }

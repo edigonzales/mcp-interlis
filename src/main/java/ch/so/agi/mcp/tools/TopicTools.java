@@ -5,6 +5,8 @@ import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import ch.so.agi.mcp.util.NameValidator;
+
 import java.util.Map;
 
 @Component
@@ -17,6 +19,9 @@ public class TopicTools {
       @ToolParam(description = "OID-Definition, z. B. 'OID AS UUIDOID'") @Nullable String oidType,
       @ToolParam(description = "Abstrakter Topic?") @Nullable Boolean isAbstract
   ) {
+      var nv = NameValidator.ascii(); 
+      nv.validateIdent(name, "Topic name");
+
     boolean abs = isAbstract != null && isAbstract;
     String header = abs ? String.format("TOPIC %s (ABSTRACT) =", name) : String.format("TOPIC %s =", name);
     String oid = (oidType != null && !oidType.isBlank()) ? "  " + oidType.trim() + ";\n" : "";

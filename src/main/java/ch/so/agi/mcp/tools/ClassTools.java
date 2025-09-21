@@ -5,6 +5,8 @@ import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import ch.so.agi.mcp.util.NameValidator;
+
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,12 @@ public class ClassTools {
       @ToolParam(description = "OID-Definition, z. B. 'OID AS UUIDOID'") @Nullable String oidDecl,
       @ToolParam(description = "Attribut-Zeilen (roher ILI-Text)") @Nullable List<String> attrLines
   ) {
+      var nv = NameValidator.ascii(); 
+      nv.validateIdent(name, "Class name");
+      if (extendsFqn != null && !extendsFqn.isBlank()) {
+          nv.validateFqn(extendsFqn, "EXTENDS FQN");
+        }
+      
     boolean abs = isAbstract != null && isAbstract;
     String header = "CLASS " + name + (abs ? " (ABSTRACT)" : "") +
         (extendsFqn != null && !extendsFqn.isBlank() ? " EXTENDS " + extendsFqn.trim() : "") + " =";
@@ -48,6 +56,7 @@ public class ClassTools {
       @ToolParam(description = "Sammlungstyp: NONE|LIST OF|BAG OF") @Nullable String collection,
       @ToolParam(description = "Alternative Domain-FQN (überschreibt 'type')") @Nullable String domainFqn
   ) {
+
     String col = (collection != null && !collection.isBlank() && !collection.equalsIgnoreCase("NONE"))
         ? collection.trim() + " "
         : "";

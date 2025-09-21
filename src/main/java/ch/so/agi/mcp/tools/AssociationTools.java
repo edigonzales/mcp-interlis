@@ -4,6 +4,8 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
+import ch.so.agi.mcp.util.NameValidator;
+
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +24,15 @@ public class AssociationTools {
       @ToolParam(description = "Assoziationsname", required = true) String name,
       @ToolParam(description = "Rollen (mindestens 2)", required = true) List<Role> roles
   ) {
+      
+      var nv = NameValidator.ascii();
+   
     StringBuilder sb = new StringBuilder();
     sb.append("ASSOCIATION ").append(name).append(" =\n");
     for (Role r : roles) {
+        nv.validateIdent(r.name, "Association role name");
+        nv.validateFqn(r.classFQN, "Association role class FQN");
+
       sb.append("  ").append(r.name).append(" -- ").append(r.card).append(" ").append(r.classFQN).append(";\n");
     }
     sb.append("END ").append(name).append(";");

@@ -5,6 +5,8 @@ import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import ch.so.agi.mcp.util.NameValidator;
+
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +30,12 @@ public class ModelTools {
       @ToolParam(description = "Version im Format YYYY-MM-DD") @Nullable String version,
       @ToolParam(description = "Zusätzliche Imports (z. B. 'GeometryCHLV95_V1')") @Nullable List<String> imports
   ) {
+      
+      var nv = NameValidator.ascii(); 
+      for (String m : imports) {
+          nv.validateIdent(m, "Import model name");
+        }
+      
     String _lang = (lang == null || lang.isBlank()) ? "de" : lang.trim();
     String _version = (version == null || version.isBlank()) ? LocalDate.now(clock).toString() : version.trim();
     String _uri = (uri == null || uri.isBlank()) ? ("https://example.org/" + name.toLowerCase()) : uri.trim();
