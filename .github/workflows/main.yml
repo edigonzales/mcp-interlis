@@ -88,9 +88,18 @@ jobs:
           java-version: '21'
           cache: 'gradle'
 
-      - name: Build jar
+      - name: Run unit tests
         run: |
           ./gradlew clean test -i
+
+      - name: Build jar
+        run: |
+          ./gradlew build -i -x test
+
+      - name: Run e2e tests
+        run: |
+          ./gradlew e2eTest -i
+
 
   #     - uses: actions/upload-artifact@v4
   #       if: ${{ failure() }}
