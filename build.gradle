@@ -26,6 +26,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation "org.springframework.ai:spring-ai-starter-mcp-server"
     implementation "org.springframework.boot:spring-boot-starter"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 

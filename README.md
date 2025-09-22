@@ -8,6 +8,7 @@
 - write tests
 - document: json (codex) inkl. beispiel
 - document: diagram mcp (codex)
+- kann man "capabilities" anschauen? json?
 - 
 
 - partial compilation?

@@ -1,31 +1,21 @@
 package ch.so.agi.mcp.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Pattern;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseType {
 
-  public enum Kind {
-      TEXT,            // optional length
-      MTEXT,           // optional length (multiline)
-      NUM_RANGE,       // requires min,max (+ optional unitFqn)    BOOLEAN,         // no extra fields
-      BOOLEAN,
-      COORD,
-      POLYLINE,
-      SURFACE_SIMPLE
-  }
+  public enum Kind { TEXT, MTEXT, NUM_RANGE, BOOLEAN, COORD, POLYLINE, SURFACE_SIMPLE }
 
   private Kind kind;
-
-  // TEXT / MTEXT
-  private Integer length;  // null => unbounded
-  
-  // NUM_RANGE
+  private Integer length;
   private Double min;
   private Double max;
+
+  @Pattern(regexp = "^([A-Za-z][A-Za-z0-9_]*)(\\\\.[A-Za-z][A-Za-z0-9_]*)*$", message = "FQN must be dot-separated identifiers")
   private String unitFqn;
 
-  // getters/setters
   public Kind getKind() { return kind; }
   public void setKind(Kind kind) { this.kind = kind; }
 
@@ -41,28 +31,18 @@ public class BaseType {
   public String getUnitFqn() { return unitFqn; }
   public void setUnitFqn(String unitFqn) { this.unitFqn = unitFqn; }
 
-  /** Validates required fields per kind */
   public void validate() {
-      if (kind == null) {
-        throw new IllegalArgumentException("baseType.kind is required.");
+    if (kind == null) throw new IllegalArgumentException("baseType.kind is required.");
+    switch (kind) {
+      case TEXT, MTEXT -> {
+        if (length == null || length < 1) throw new IllegalArgumentException("TEXT requires 'length' >= 1.");
       }
-      switch (kind) {
-        case TEXT, MTEXT -> {
-          // length is optional; if present must be >= 1
-          if (length != null && length < 1) {
-            throw new IllegalArgumentException(kind + " length, if provided, must be >= 1.");
-          }
-        }
-        case NUM_RANGE -> {
-          if (min == null || max == null) {
-            throw new IllegalArgumentException("NUM_RANGE requires 'min' and 'max'.");
-          }
-          if (!(min < max)) {
-            throw new IllegalArgumentException("NUM_RANGE requires min < max (got " + min + " .. " + max + ").");
-          }
-        }
-        case BOOLEAN, COORD, POLYLINE, SURFACE_SIMPLE -> { /* no extra fields */ }
-        default -> throw new IllegalArgumentException("Unsupported baseType.kind: " + kind);
+      case NUM_RANGE -> {
+        if (min == null || max == null) throw new IllegalArgumentException("NUM_RANGE requires 'min' and 'max'.");
+        if (!(min < max)) throw new IllegalArgumentException("NUM_RANGE requires min < max (got " + min + " .. " + max + ").");
       }
+      case BOOLEAN, COORD, POLYLINE, SURFACE_SIMPLE -> { /* ok */ }
+      default -> throw new IllegalArgumentException("Unsupported baseType.kind: " + kind);
     }
   }
+}
