@@ -95,6 +95,7 @@ jobs:
       - name: Build jar
         run: |
           ./gradlew build -i -x test
+          ls -la build/libs
 
       - name: Run e2e tests
         run: |
