@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
+
 class BaseTypeTest {
 
     @Test
@@ -13,6 +15,7 @@ class BaseTypeTest {
         assertDoesNotThrow(baseType::validate);
     }
 
+   // @Disabled
     @Test
     void validate_rejectsTextWithInvalidLength() {
         BaseType baseType = new BaseType();

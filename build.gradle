@@ -8,6 +8,15 @@ apply from: "$rootDir/gradle/versioning.gradle"
 
 group = 'ch.so.agi'
 
+sourceSets {
+    e2e {
+        java.srcDir 'src/e2e/java'
+        resources.srcDir 'src/e2e/resources'
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
+  }
+}
+
 java { 
     toolchain { 
         languageVersion = JavaLanguageVersion.of(21) 
@@ -19,7 +28,12 @@ repositories {
 }
 
 ext {
-  set('springAiVersion', "1.0.2")
+    set('springAiVersion', "1.0.2")
+}
+
+configurations {
+    e2eImplementation.extendsFrom testImplementation
+    e2eRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 dependencies {
@@ -28,6 +42,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter"
     implementation "org.springframework.boot:spring-boot-starter-validation"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+        
+    e2eImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 dependencyManagement {
@@ -37,10 +53,28 @@ dependencyManagement {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform() {
+        excludeTags 'e2e'
+    }
 }
-
 
 bootJar { 
     archiveFileName = 'mcp-interlis.jar' 
 }
+
+tasks.register('e2eTest', Test) {
+    description = 'Runs end-to-end tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.e2e.output.classesDirs
+    classpath = sourceSets.e2e.runtimeClasspath
+    shouldRunAfter tasks.test
+    // optional filters/tags:
+    //systemProperty 'junit.jupiter.tags', 'e2e'
+    //include '**/*E2E*'
+    useJUnitPlatform() {
+        includeTags 'e2e'
+    }
+
+}
+
+//tasks.check { dependsOn tasks.named('e2eTest') }

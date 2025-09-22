@@ -35,7 +35,7 @@ public class BaseType {
     if (kind == null) throw new IllegalArgumentException("baseType.kind is required.");
     switch (kind) {
       case TEXT, MTEXT -> {
-        if (length == null || length < 1) throw new IllegalArgumentException("TEXT requires 'length' >= 1.");
+        if (length != null && length < 1) throw new IllegalArgumentException("TEXT requires 'length' >= 1.");
       }
       case NUM_RANGE -> {
         if (min == null || max == null) throw new IllegalArgumentException("NUM_RANGE requires 'min' and 'max'.");
