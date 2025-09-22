@@ -31,10 +31,12 @@ public class ModelTools {
       @ToolParam(description = "Zusätzliche Imports (z. B. 'GeometryCHLV95_V1')") @Nullable List<String> imports
   ) {
       
-      var nv = NameValidator.ascii(); 
-      for (String m : imports) {
+      var nv = NameValidator.ascii();
+      if (imports != null) {
+        for (String m : imports) {
           nv.validateIdent(m, "Import model name");
         }
+      }
       
     String _lang = (lang == null || lang.isBlank()) ? "de" : lang.trim();
     String _version = (version == null || version.isBlank()) ? LocalDate.now(clock).toString() : version.trim();
