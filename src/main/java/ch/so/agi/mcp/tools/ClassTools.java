@@ -47,22 +47,22 @@ public class ClassTools {
     return Map.of("iliSnippet", sb.toString(), "cursorHint", Map.of("line", 1, "col", 2));
   }
 
-  @Tool(name = "createAttributeLine",
-        description = "Erzeugt eine einzelne Attribut-Zeile. Params: name (required), type (required), mandatory (default false), collection (NONE|LIST OF|BAG OF), domainFQN (optional).")
-  public Map<String,Object> createAttributeLine(
-      @ToolParam(description = "Attributname", required = true) String name,
-      @ToolParam(description = "Typ oder Domain-FQN", required = true) String type,
-      @ToolParam(description = "MANDATORY?") @Nullable Boolean mandatory,
-      @ToolParam(description = "Sammlungstyp: NONE|LIST OF|BAG OF") @Nullable String collection,
-      @ToolParam(description = "Alternative Domain-FQN (überschreibt 'type')") @Nullable String domainFqn
-  ) {
-
-    String col = (collection != null && !collection.isBlank() && !collection.equalsIgnoreCase("NONE"))
-        ? collection.trim() + " "
-        : "";
-    String base = (domainFqn != null && !domainFqn.isBlank()) ? domainFqn.trim() : type.trim();
-    String mand = (mandatory != null && mandatory) ? "MANDATORY " : "";
-    String line = name + " : " + mand + col + base + ";";
-    return Map.of("iliSnippet", line, "cursorHint", Map.of("line", 0, "col", 0));
-  }
+//  @Tool(name = "createAttributeLine",
+//        description = "Erzeugt eine einzelne Attribut-Zeile. Params: name (required), type (required), mandatory (default false), collection (NONE|LIST OF|BAG OF), domainFQN (optional).")
+//  public Map<String,Object> createAttributeLine(
+//      @ToolParam(description = "Attributname", required = true) String name,
+//      @ToolParam(description = "Typ oder Domain-FQN", required = true) String type,
+//      @ToolParam(description = "MANDATORY?") @Nullable Boolean mandatory,
+//      @ToolParam(description = "Sammlungstyp: NONE|LIST OF|BAG OF") @Nullable String collection,
+//      @ToolParam(description = "Alternative Domain-FQN (überschreibt 'type')") @Nullable String domainFqn
+//  ) {
+//
+//    String col = (collection != null && !collection.isBlank() && !collection.equalsIgnoreCase("NONE"))
+//        ? collection.trim() + " "
+//        : "";
+//    String base = (domainFqn != null && !domainFqn.isBlank()) ? domainFqn.trim() : type.trim();
+//    String mand = (mandatory != null && mandatory) ? "MANDATORY " : "";
+//    String line = name + " : " + mand + col + base + ";";
+//    return Map.of("iliSnippet", line, "cursorHint", Map.of("line", 0, "col", 0));
+//  }
 }
