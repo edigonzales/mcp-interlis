@@ -1,4 +1,4 @@
-# mcp-interlis
+# interlis-mcp
 
 
 ## todo
