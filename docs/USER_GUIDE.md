@@ -29,7 +29,7 @@ Gradle will launch the Spring Boot application in STDIO mode using the configura
 ### Run with Docker
 Follow the Docker instructions from the project README:
 ```bash
-docker build -t interlis-mcp .
+./gradlew buildAndPushMultiArchImage
 docker run --rm -i interlis-mcp
 ```
 Ensure `stdin_open` remains true and no TTY is allocated so the MCP JSON-RPC stream stays intact.
@@ -38,27 +38,26 @@ Ensure `stdin_open` remains true and no TTY is allocated so the MCP JSON-RPC str
 
 ### Claude Desktop
 1. Start the server locally (JAR, Gradle, or Docker).
-2. Open **Claude Desktop → Settings → Developer → Model Context Protocol tools**.
-3. Click **Add tool** and provide:
-   - **Name**: `interlis-mcp`
-   - **Command**: the invocation you use locally, for example `java -jar /path/to/interlis-mcp.jar` or `docker run --rm -i interlis-mcp`.
-   - Leave transport as STDIO (default).
-4. Save the tool and enable it for the conversations where you want INTERLIS support.
-5. Claude can now call the registered tools whenever it needs snippets or validation logic.
+2. Open **Claude Desktop → Settings → Developer → Local MCP servers → Edit Config**.
+3. Add an entry to your `claude_desktop_config.json` similar to:
+   ```json
+   {
+      "mcpServers" : {
+          "interlis-mcp": {
+              "command" : "/Users/stefan/.sdkman/candidates/java/21.0.4-graal/bin/java",
+              "args": ["-jar", "/Users/stefan/sources/mcp-interlis/build/libs/interlis-mcp.jar"],
+              "env": {
+                  "JAVA_TOOL_OPTIONS": "-Xms512m -Xmx512m"
+              }
+          } 
+      }
+   }m
+   ```
+4. Claude can now call the registered tools whenever it needs snippets or validation logic.
 
 ### Visual Studio Code
-1. Install an MCP-capable extension such as *Model Context Protocol* from the VS Code Marketplace.
-2. Start the `interlis-mcp` server command (JAR or Docker) or reference it in the extension configuration.
-3. Add an entry to your VS Code settings (JSON) similar to:
-   ```json
-   "modelContextProtocol.servers": {
-     "interlis-mcp": {
-       "command": "java",
-       "args": ["-jar", "/absolute/path/to/interlis-mcp.jar"]
-     }
-   }
-   ```
-4. Reload VS Code so the extension spawns the MCP server. Tool calls now appear inside the chat or coding assistant UI.
+1. Use the `MCP: Add Server` command and follow the instructions.
+2. A `mcp.json` file will be openend at the end where you can validate the mcp server settings.
 
 ## Tool reference
 The server registers all tools in `ToolsConfig` and advertises itself as an STDIO, tool-capable MCP endpoint. Each tool returns an object that at least contains `iliSnippet` (the generated INTERLIS fragment) and, where applicable, a `cursorHint` map indicating where to place the caret in editors.

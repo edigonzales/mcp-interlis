@@ -37,7 +37,7 @@ flowchart LR
 Build the container image locally:
 
 ```bash
-docker build -t interlis-mcp .
+./gradlew buildAndPushMultiArchImage
 ```
 
 Run the MCP server with standard input/output connected to your host:
