@@ -11,9 +11,9 @@
 ```mermaid
 flowchart LR
     Client["MCP client (Claude Desktop, VS Code, etc.)"]
-    Runtime["MCP runtime / transport\n(JSON-RPC over STDIO)"]
-    Server["interlis-mcp server\n(Spring Boot + Spring AI)"]
-    Registry["MethodToolCallbackProvider\nregistered tools"]
+    Runtime["MCP runtime / transport<br/>(JSON-RPC over STDIO)"]
+    Server["interlis-mcp server<br/>(Spring Boot + Spring AI)"]
+    Registry["MethodToolCallbackProvider<br/>registered tools"]
     Ili["INTERLIS snippet / validation output"]
 
     Client --> Runtime --> Server --> Registry --> Ili
