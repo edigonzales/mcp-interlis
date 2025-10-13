@@ -46,7 +46,7 @@ For attribute creation the server uses rich DTOs:
 Re-use these classes when introducing new tools that work with attributes to stay consistent with existing validation logic.
 
 ## Docker packaging
-The Gradle build delegates to `gradle/docker.gradle` so you can run `docker build -t interlis-mcp .` from the repository root. The resulting image launches the STDIO server immediately, making it convenient for MCP clients that manage tools as container commands.
+The Gradle build delegates to `gradle/docker.gradle` so you can run `./gradlew buildAndPushMultiArchImage` from the repository root. The resulting image launches the STDIO server immediately, making it convenient for MCP clients that manage tools as container commands.
 
 ## Coding guidelines
 - Prefer `NameValidator.ascii()` to enforce classic INTERLIS identifier rules when accepting names or FQNs.
