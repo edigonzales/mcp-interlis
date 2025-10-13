@@ -5,6 +5,7 @@ plugins {
 }
 
 apply from: "$rootDir/gradle/versioning.gradle"
+apply from: "$rootDir/gradle/docker.gradle"
 
 group = 'ch.so.agi'
 
@@ -59,7 +60,7 @@ tasks.named('test') {
 }
 
 bootJar { 
-    archiveFileName = 'mcp-interlis.jar' 
+    archiveFileName = 'interlis-mcp.jar' 
 }
 
 tasks.register('e2eTest', Test) {

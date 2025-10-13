@@ -1,4 +1,6 @@
 .DS_Store
+docker/image/tmp
+
 !datahub_key.xtf
 !datahub.xtf
 *.xtf
