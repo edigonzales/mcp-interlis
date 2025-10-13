@@ -24,7 +24,7 @@ public class StdioE2eTest {
     
     @BeforeEach
     void startServer() throws Exception {
-        ProcessBuilder pb = new ProcessBuilder("java", "-jar", "build/libs/mcp-interlis.jar");
+        ProcessBuilder pb = new ProcessBuilder("java", "-jar", "build/libs/interlis-mcp.jar");
         pb.redirectErrorStream(false);
         proc = pb.start();
 
